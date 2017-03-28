@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import F
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -9,6 +10,7 @@ from .serializers import ChoiceSerializer, QuestionSerializer
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
+@csrf_exempt
 def questions_list(request):
 
     if request.method == 'GET':
@@ -48,11 +50,27 @@ def question_detail(request, pk):
         question.delete()
         return HttpResponse(status=204)
 
-def vote_choice(question_id, choice_id):
+@csrf_exempt
+def vote_choice(request, question_id, choice_id):
     try:
         choice = Choice.objects.get(pk=choice_id, question=question_id)
-    except: Choice.DoesNotExist:
+    except Choice.DoesNotExist:
         return HttpResponse(status=404)
-    
-    # TODO: Add many to many relation between user and vote_choice
-    # TODO: User needs to be connected for this method
+
+    if request.method == 'POST':
+        choice.votes = F('votes') + 1
+        choice.save()
+        return HttpResponse(status=200)
+
+    elif request.method == 'GET':
+        serializer = ChoiceSerializer(choice)
+        return JsonResponse(serializer.data)
+
+    if request.method == 'DELETE':
+        if choice.votes > 0:
+            choice.votes = F('votes') - 1
+            choice.save()
+            return HttpResponse(status=200)
+
+# TODO: Add many to many relation between user and vote_choice
+# TODO: User needs to be connected for this method

@@ -1,0 +1,1 @@
+{"status":"error","publicPath":"/static/bundles/","error":"EntryModuleNotFoundError","message":"Entry module not found: Error: Cannot resolve 'file' or 'directory' ./static/src/index.js in C:\\1\\Projects\\Polly\\polly\\static"}

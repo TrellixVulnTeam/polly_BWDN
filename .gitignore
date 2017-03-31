@@ -1,15 +1,7 @@
 .vscode
 node_modules
 static/bundles
-FoodKeeperWeb/__pycache__
+polly/__pycache__
 db.sqlite3
-FoodKeeperServer/__pycache__
-fkw.log
-
-# Elastic Beanstalk Files
-
-.elasticbeanstalk/*
-
-!.elasticbeanstalk/*.cfg.yml
-
-!.elasticbeanstalk/*.global.yml
+polly/__pycache__
+npm-debug.log

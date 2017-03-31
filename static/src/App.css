@@ -1,5 +1,12 @@
+html, body
+{
+    background-color: #E8F5E9;
+    overflow: hidden;
+}
+
 .App {
   text-align: center;
+  height: fit-content;
 }
 
 .App-logo {
@@ -8,16 +15,27 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  height: 40%;
   padding: 20px;
   color: white;
+}
+
+.App-primary-color {
+  background-color: #4CAF50
 }
 
 .App-intro {
   font-size: large;
 }
 
+.App-body{
+  /*height: 60%;*/
+  padding: 40px;
+}
+
+.App-body-color {
+  background-color: #E8F5E9
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

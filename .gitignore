@@ -3,5 +3,5 @@ node_modules
 static/bundles
 polly/__pycache__
 db.sqlite3
-polly/__pycache__
+pollyServer/__pycache__
 npm-debug.log

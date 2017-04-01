@@ -46,18 +46,17 @@ class SignUpComponent extends Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(userToAdd)
-		}).then(function successCallback(response) {
+		}).then(
+			function successCallback(response) {
+				if (response.status == 201) {
 
+				}
+			}, 
+			function errorCallback(response) {
 				var n = 0;
 				n+=3;
-
-			}, function errorCallback(response) {
-				var n = 0;
-				n+=3;
-			}).catch(function catchCallback(error) {
-				var n = 0;
-				n+=3;
-			});
+			}
+		);
 	}
 
 	checkPassword(value, isRpt) {
@@ -121,7 +120,7 @@ class SignUpComponent extends Component {
 				</div>
 				<div>
 					<RaisedButton 
-						label="Sign in!"
+						label="Sign up!"
 						 style={signInStyle} 
 						 primary={true} 
 						 onClick={this.signUpClick} 

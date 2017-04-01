@@ -17,17 +17,50 @@ class SignUpComponent extends Component {
 		}
 
 		// This binding is necessary to make `this` work in the callback
-    	this.signUp = this.signUp.bind(this);   
+    	this.signUp = this.signUp.bind(this); 
+    	this.signUpClick = this.signUp.bind(this);		  
 		// this.checkPassword = this.checkPassword.bind(this);
+	}
+
+	signUpClick() {
+
+		// TODO: validate things
+
+		this.signUp();
 	}
 
 	signUp() {
 
+		var state = this.state;
+		var userToAdd = {
+			email: state.email,
+			username: state.username,
+			password: state.password
+		}
+
+		// Adding user data to db
+		fetch('/polls/users/', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(userToAdd)
+		}).then(function successCallback(response) {
+
+				var n = 0;
+				n+=3;
+
+			}, function errorCallback(response) {
+				var n = 0;
+				n+=3;
+			}).catch(function catchCallback(error) {
+				var n = 0;
+				n+=3;
+			});
 	}
 
 	checkPassword(value, isRpt) {
-
-		var state = this.state;
 
 		var stateChange;
 		// Setting temp
@@ -42,6 +75,7 @@ class SignUpComponent extends Component {
 			// Checking if password and repeat 
 			if (this.state.rptPassword === this.state.tempPassword) {
 				this.setState({password: value});
+				console.log("password good");
 			} else {
 				this.setState({password: ""});
 			}
@@ -81,11 +115,19 @@ class SignUpComponent extends Component {
 					<TextField 
 						hintText="repeat password" 
 						type="password" 
-						onChange={this.checkPassword.bind(this)}						
+						onChange={(event) => this.checkPassword(event.target.value, true)}						
 						value={this.state.rptPassword}
 						/>
 				</div>
-				<div><RaisedButton label="Sign in!" style={signInStyle} primary={true} /></div>
+				<div>
+					<RaisedButton 
+						label="Sign in!"
+						 style={signInStyle} 
+						 primary={true} 
+						 onClick={this.signUpClick} 
+						 disabled={this.state.password === ""}
+					/>
+				</div>
 				<div>
 					<FlatButton label="already registered? login!"/>
 				</div>

@@ -1,0 +1,1 @@
+@"c:\1\projects\polly\pollyenv\scripts\python.exe" "c:\1\projects\polly\pollyenv\Scripts\markdown_py" %*

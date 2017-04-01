@@ -1,3 +1,5 @@
+{% load render_bundle from webpack_loader %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,6 +19,7 @@
   </head>
   <body>
     <div id="root"></div>
+    {% render_bundle 'main' %}
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

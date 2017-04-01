@@ -19,7 +19,7 @@ STATICFILES_DIRS = (
     BASE_DIR + '/static', # We do this so that django's collectstatic copies or our bundles to the STATIC_ROOT or syncs them to whatever storage we use.
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -37,7 +37,7 @@ SECRET_KEY = '1z9h_%@-7b8=nv+nwh$0^p@rv2%9inedviwy)t^489yhde=2x_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 if not DEBUG:
     LOGGING = {
@@ -84,14 +84,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # 'webpack_loader',
+    'webpack_loader',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # The above was disables because there is an error when reading request body
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -102,7 +103,8 @@ ROOT_URLCONF = 'polly.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['static/public',
+                 'static/bundles'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -149,7 +151,10 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    # 'FORM_METHOD_OVERRIDE': None,
+    # 'FORM_CONTENT_OVERRIDE': None,
+    # 'FORM_CONTENTTYPE_OVERRIDE': None
 }
 
 # Password validation

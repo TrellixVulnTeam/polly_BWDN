@@ -5,6 +5,13 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './index.css';
+import { 
+  Router,
+  Route,
+  Link, 
+  browserHistory, 
+  IndexRoute 
+} from 'react-router';
 import {
   green500, 
   green50,
@@ -38,7 +45,10 @@ const muiTheme = getMuiTheme({
 
 const MuiApp = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
-    <App />
+    <Router history={browserHistory}>
+      <Route path="/" component={App} >
+      </Route>
+    </Router>
   </MuiThemeProvider>
 );
 

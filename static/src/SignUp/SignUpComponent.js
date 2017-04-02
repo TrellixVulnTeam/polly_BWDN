@@ -50,6 +50,8 @@ class SignUpComponent extends Component {
 			function successCallback(response) {
 				if (response.status == 201) {
 
+					// Going to login view
+					
 				}
 			}, 
 			function errorCallback(response) {

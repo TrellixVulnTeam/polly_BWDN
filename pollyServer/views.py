@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import F
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -109,6 +110,19 @@ def user_details(request, pk):
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)             
+
+def login_user(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            # Redirect to a success page.
+        # else:
+            # Return a 'disabled account' error message 
+    # else:
+        # Return an 'invalid login' error message.
 
 # TODO: Add many to many relation between user and vote_choice
 # TODO: User needs to be connected for this method

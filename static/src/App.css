@@ -1,12 +1,16 @@
 html, body
 {
     background-color: #E8F5E9;
-    overflow: hidden;
+    height: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 .App {
   text-align: center;
-  height: fit-content;
+  height: 100%;
 }
 
 .App-logo {
@@ -15,7 +19,8 @@ html, body
 }
 
 .App-header {
-  height: 40%;
+  min-height: 180px;
+  height: 25%;
   padding: 20px;
   color: white;
 }
@@ -29,13 +34,14 @@ html, body
 }
 
 .App-body{
-  /*height: 60%;*/
+  height: auto;
   padding: 40px;
 }
 
 .App-body-color {
   background-color: #E8F5E9
 }
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

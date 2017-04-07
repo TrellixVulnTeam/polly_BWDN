@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^questions/(?P<question_id>[0-9]+)/vote/(?P<choice_id>[0-9]+)/$', voteView.VoteDetail.as_view),      
     url(r'^users/$', usersView.UserList.as_view()),
     url(r'^users/login/$', loginView.Login.as_view()),
+    url(r'^users/logout/$', loginView.Logout.as_view()),    
 ]

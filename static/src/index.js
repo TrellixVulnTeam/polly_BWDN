@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import SignUpComponent from './SignUp/SignUpComponent.js'
+import LoginComponent from './Login/LoginComponent.js'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -46,7 +48,9 @@ const muiTheme = getMuiTheme({
 const MuiApp = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <Router history={browserHistory}>
-      <Route path="/" component={App} >
+      <Route path="/" component={App}>
+        <IndexRoute component={SignUpComponent}></IndexRoute>
+        <Route path="/login" component={LoginComponent}></Route>
       </Route>
     </Router>
   </MuiThemeProvider>

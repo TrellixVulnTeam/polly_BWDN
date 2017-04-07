@@ -8,14 +8,16 @@ class App extends Component {
     return (
       <div className="App App-body-color">
         <div className="App-header App-primary-color">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Polly</h2>
-          {/*<div className="App-intro">
-            The place to make hard decisions!
-          </div>*/}
+
+          <div>
+            <img src={logo} className="App-logo" alt="logo" />
+            <h2>Welcome to Polly</h2>
+            <h3>The place where decisions are made</h3>
+          </div>
+          
         </div>
         <div className="App-body">
-          <SignUpComponent />
+          {this.props.children}
         </div>
       </div>
     );

@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
+import {redA400} from 'material-ui/styles/colors';
+import {Card} from 'material-ui/Card';
+import '../App.css';
+import { browserHistory } from 'react-router';
 
 class SignUpComponent extends Component {
 
@@ -13,13 +18,15 @@ class SignUpComponent extends Component {
 			password: "",
 			username: "",
 			tempPassword: "",
-			rptPassword: ""
+			rptPassword: "",
+			errorMessage: "",
+			emailValid: true
 		}
 
 		// This binding is necessary to make `this` work in the callback
     	this.signUp = this.signUp.bind(this); 
-    	this.signUpClick = this.signUp.bind(this);		  
-		// this.checkPassword = this.checkPassword.bind(this);
+    	this.signUpClick = this.signUpClick.bind(this);		  
+		this.onSnackbarClose = this.onSnackbarClose.bind(this);
 	}
 
 	signUpClick() {
@@ -46,19 +53,18 @@ class SignUpComponent extends Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(userToAdd)
-		}).then(
-			function successCallback(response) {
-				if (response.status == 201) {
-
-					// Going to login view
-					
-				}
-			}, 
-			function errorCallback(response) {
-				var n = 0;
-				n+=3;
+		}).then((response) => {
+			if (response.status == 400 || response.status == 500) {
+				this.setState({errorMessage: "Username or Email already exists"});
+			} else {
+				this.goToLogin();
 			}
-		);
+		});
+	}
+
+	goToLogin() {
+		// Going to login view
+		browserHistory.push('/login');
 	}
 
 	checkPassword(value, isRpt) {
@@ -83,55 +89,75 @@ class SignUpComponent extends Component {
 		});
 	}
 
+	onSnackbarClose() {
+		this.setState({errorMessage: ""});
+	}
 	render() {
 
 		var signInStyle = {
 			margin: 20
 		}
+
+		var snackbarStyle = {
+			backgroundColor: redA400
+		}
 		return (
 			<div>
-				<div>
-					<TextField 
-						hintText="username" 
-						onChange={(event) => this.setState({username: event.target.value})}
-						value={this.state.username}
-					/>
-				</div>
-				<div>
-					<TextField 
-						hintText="email"
-						onChange={(event) => this.setState({email: event.target.value})}						 
-						value={this.state.email}
-					/>
-				</div>
-				<div>
-					<TextField 
-						hintText="password" 
-						type="password" 
-						onChange={(event) => this.checkPassword(event.target.value)}
-						value={this.state.tempPassword}
+				{/*<Card>*/}
+					<div>
+						<TextField 
+							hintText="username" 
+							onChange={(event) => this.setState({username: event.target.value})}
+							value={this.state.username}
 						/>
-				</div>
-				<div>
-					<TextField 
-						hintText="repeat password" 
-						type="password" 
-						onChange={(event) => this.checkPassword(event.target.value, true)}						
-						value={this.state.rptPassword}
+					</div>
+					<div>
+						<TextField 
+							hintText="email"
+							onChange={(event) => this.setState({email: event.target.value})}						 
+							value={this.state.email}
 						/>
-				</div>
+					</div>
+					<div>
+						<TextField 
+							hintText="password" 
+							type="password" 
+							onChange={(event) => this.checkPassword(event.target.value)}
+							value={this.state.tempPassword}
+						/>
+					</div>
+					<div>
+						<TextField 
+							hintText="repeat password" 
+							type="password" 
+							onChange={(event) => this.checkPassword(event.target.value, true)}						
+							value={this.state.rptPassword}
+							/>
+					</div>
+					<div>
+						<RaisedButton 
+							label="Sign up!"
+							style={signInStyle} 
+							primary={true} 
+							onClick={this.signUpClick} 
+							disabled={this.state.password === "" && this.state.emailValid}
+							// TODO: validate email
+						/>
+					</div>
+				{/*</Card>*/}
 				<div>
-					<RaisedButton 
-						label="Sign up!"
-						 style={signInStyle} 
-						 primary={true} 
-						 onClick={this.signUpClick} 
-						 disabled={this.state.password === ""}
+					<FlatButton 
+						label="already registered? login!"
+						onClick={(event) => this.goToLogin()}
 					/>
 				</div>
-				<div>
-					<FlatButton label="already registered? login!"/>
-				</div>
+				<Snackbar
+					open={this.state.errorMessage != ""}
+					message={this.state.errorMessage}
+					autoHideDuration={4000}
+					onRequestClose={this.onSnackbarClose}
+					bodyStyle={snackbarStyle}
+				/>
 			</div>
 		)
 	}

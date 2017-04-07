@@ -12,10 +12,10 @@ class UserList(mixins.CreateModelMixin,
 	def post(self, request, *args, **kwargs):
 		return self.create(request, *args, **kwargs)
 
-class QuestionDetail(mixins.RetrieveModelMixin,
-                     mixins.UpdateModelMixin,
-                     mixins.DestroyModelMixin,
-                     generics.GenericAPIView):
+class UserDetail(mixins.RetrieveModelMixin,
+                 mixins.UpdateModelMixin,
+                 mixins.DestroyModelMixin,
+                 generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

@@ -1,15 +1,17 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from ..serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth.backends import ModelBackend
 
 class Login	(APIView):
 
 	# Login user
 	def post(self, request, *args, **kwargs):
-		username = request.POST['username']
-		password = request.POST['password']
+		username = request.data['username']
+		password = request.data['password']
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			if user.is_active:
@@ -19,3 +21,11 @@ class Login	(APIView):
 				return Response(status=401)
 		else:
 			return Response(status=401)
+
+class Logout(APIView):
+
+	# Logout
+	@login_required	
+	def post(self, request, *args, **kwargs):
+		logout(request)
+		return Response(status=200)

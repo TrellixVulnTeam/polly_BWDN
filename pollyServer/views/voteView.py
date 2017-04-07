@@ -20,6 +20,7 @@ class VoteDetail(mixins.UpdateModelMixin,
 		except Choice.DoesNotExist:
 			return HttpResponse(status=404)
 
-		choice.votes = F('votes') + 1
+		choice.users_voted.add(request.user.id)
+		choice.votes = choice.users_voted.len()
 		choice.save()
 		return HttpResponse(status=200)

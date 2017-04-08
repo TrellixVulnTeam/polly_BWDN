@@ -140,7 +140,9 @@ class SignUpComponent extends Component {
 							style={signInStyle} 
 							primary={true} 
 							onClick={this.signUpClick} 
-							disabled={this.state.password === "" && this.state.emailValid}
+							disabled={this.state.password === "" && 
+									  this.state.emailValid && 
+									  this.state.username === ""}
 							// TODO: validate email
 						/>
 					</div>

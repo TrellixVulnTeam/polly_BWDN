@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import SignUpComponent from './SignUp/SignUpComponent.js'
 import LoginComponent from './Login/LoginComponent.js'
+import PollsView from './PollsView/PollsView.js'
+import MainFrameComponent from './MainFrame/MainFrameComponent.js'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -18,7 +20,7 @@ import {
   green500, 
   green50,
   green700,
-  pinkA200,
+  cyanA700,
   grey100, grey300, grey400, grey500,
   white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
@@ -28,7 +30,7 @@ const muiTheme = getMuiTheme({
     primary1Color: green500,
     primary2Color: green700,
     primary3Color: grey400,
-    accent1Color: pinkA200,
+    accent1Color: cyanA700,
     accent2Color: grey100,
     accent3Color: grey500,
     textColor: darkBlack,
@@ -51,6 +53,9 @@ const MuiApp = () => (
       <Route path="/" component={App}>
         <IndexRoute component={SignUpComponent}></IndexRoute>
         <Route path="/login" component={LoginComponent}></Route>
+      </Route>
+      <Route path="/polls" component={MainFrameComponent}>
+        <IndexRoute component={PollsView} />
       </Route>
     </Router>
   </MuiThemeProvider>

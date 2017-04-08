@@ -25,7 +25,7 @@ class Login	(APIView):
 class Logout(APIView):
 
 	# Logout
-	@login_required	
+	# @login_required(login_url='/users/login//')	
 	def post(self, request, *args, **kwargs):
 		logout(request)
 		return Response(status=200)

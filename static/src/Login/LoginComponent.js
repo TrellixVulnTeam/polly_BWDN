@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import {redA400} from 'material-ui/styles/colors';
+import { browserHistory } from 'react-router';
 
 class LoginComponent extends Component {
 
@@ -39,7 +40,8 @@ class LoginComponent extends Component {
 				// TODO: handle error
 				this.setState({errorMessage:"Username or Password incorrect"})
 			} else {
-
+				// Going to login view
+				browserHistory.push('/polls');
 			}
 		})
 	}

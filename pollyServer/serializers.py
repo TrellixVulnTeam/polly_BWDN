@@ -4,7 +4,7 @@ from .models import Choice, Question
 
 class ChoiceSerializer(serializers.ModelSerializer):
 
-    users_votes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    users_voted = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Choice
@@ -18,7 +18,14 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'question_text', 'pub_date', 'end_date', 'choice_set', 'user', 'user_name', 'participants')
+        fields = ('id', 
+                  'question_text', 
+                  'pub_date', 
+                  'end_date', 
+                  'choice_set', 
+                  'user', 
+                  'user_name', 
+                  'participants')
 
 class UserSerializer(serializers.ModelSerializer):
 

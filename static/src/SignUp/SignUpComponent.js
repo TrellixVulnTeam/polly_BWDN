@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import {redA400} from 'material-ui/styles/colors';
-import {Card} from 'material-ui/Card';
+import Paper from 'material-ui/Paper';
 import '../App.css';
 import { browserHistory } from 'react-router';
 
@@ -47,6 +47,7 @@ class SignUpComponent extends Component {
 
 		// Adding user data to db
 		fetch('/polls/users/', {
+			credentials: 'include',
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -103,7 +104,7 @@ class SignUpComponent extends Component {
 		}
 		return (
 			<div>
-				{/*<Card>*/}
+				<Paper className='inputs-card'>
 					<div>
 						<TextField 
 							hintText="username" 
@@ -140,13 +141,13 @@ class SignUpComponent extends Component {
 							style={signInStyle} 
 							primary={true} 
 							onClick={this.signUpClick} 
-							disabled={this.state.password === "" && 
-									  this.state.emailValid && 
+							disabled={this.state.password === "" || 
+									  this.state.emailValid ||
 									  this.state.username === ""}
 							// TODO: validate email
 						/>
 					</div>
-				{/*</Card>*/}
+				</Paper>
 				<div>
 					<FlatButton 
 						label="already registered? login!"

@@ -2,11 +2,14 @@ from ..models import Question
 from ..serializers import QuestionSerializer
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
 
 class QuestionList(mixins.ListModelMixin,
                   	mixins.CreateModelMixin,
                   	generics.GenericAPIView):
 	
+    # authentication_classes = (SessionAuthentication, BasicAuthentication)
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 

@@ -1,12 +1,14 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from ..serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.backends import ModelBackend
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 class Login	(APIView):
+
+	# authentication_classes = (SessionAuthentication, BasicAuthentication)
 
 	# Login user
 	def post(self, request, *args, **kwargs):
@@ -16,7 +18,7 @@ class Login	(APIView):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return Response(status=200)
+				return Response(UserSerializer(user).data)
 			else:
 				return Response(status=401)
 		else:

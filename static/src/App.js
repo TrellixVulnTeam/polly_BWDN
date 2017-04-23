@@ -2,8 +2,17 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import SignUpComponent from './SignUp/SignUpComponent.js'
+import auth from './Services/auth.js'
+import { browserHistory } from 'react-router';
 
 class App extends Component {
+
+  constructor(props) {
+      super();
+      if (auth.loggedIn()) {
+          browserHistory.push('/questions');
+      }
+  }
   render() {
     return (
       <div className="App App-body-color">

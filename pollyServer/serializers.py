@@ -25,15 +25,16 @@ class QuestionSerializer(serializers.ModelSerializer):
                   'choice_set', 
                   'user', 
                   'user_name', 
-                  'participants')
+                  'participants',
+                  'is_transparent')
 
 class UserSerializer(serializers.ModelSerializer):
 
-    questions_set = QuestionSerializer(many=True, read_only=True)
+    # questions_set = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email', 'questions_set')
+        fields = ('id', 'username', 'password', 'email')
         write_only_fields = ['password']
         read_only_fields = ['id']
 

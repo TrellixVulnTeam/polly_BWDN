@@ -8,6 +8,7 @@ class Question(models.Model):
     participants = models.ManyToManyField('auth.User')
     pub_date = models.DateTimeField('date published')
     end_date = models.DateTimeField('end date')
+    is_transparent = models.BooleanField('is transparent')
     def __str__(self):
         return self.question_text
 
@@ -15,6 +16,6 @@ class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choice_set')
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
-    users_voted = models.ManyToManyField('auth.User')
+    users_voted = models.ManyToManyField('auth.User', blank=True)
     def __str__(self):
         return self.choice_text 

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import auth from './Services/auth.js'
 import SignUpComponent from './SignUp/SignUpComponent.js'
 import LoginComponent from './Login/LoginComponent.js'
 import PollsView from './PollsView/PollsView.js'
@@ -47,6 +48,16 @@ const muiTheme = getMuiTheme({
   },
 });
 
+function requireAuth(nextState, replace) {
+    if (!auth.loggedIn()) {
+        replace({ 
+            pathname:'/',
+            state: {nextPathname: '/questions/'}
+        })
+    } 
+}
+
+
 const MuiApp = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <Router history={browserHistory}>
@@ -54,7 +65,7 @@ const MuiApp = () => (
         <IndexRoute component={SignUpComponent}></IndexRoute>
         <Route path="/login" component={LoginComponent}></Route>
       </Route>
-      <Route path="/polls" component={MainFrameComponent}>
+      <Route path="/questions" component={MainFrameComponent} onEnter={requireAuth}>
         <IndexRoute component={PollsView} />
       </Route>
     </Router>

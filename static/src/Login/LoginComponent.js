@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import {Card} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import {redA400} from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
+import auth from '../Services/auth.js'
+import cookie from 'react-cookie'
+import Paper from 'material-ui/Paper';
 
 class LoginComponent extends Component {
 
@@ -24,26 +26,40 @@ class LoginComponent extends Component {
 		this.onSnackbarCloe = this.onSnackbarCloe.bind(this);
 	}
 
-	login(email, password) {
-		fetch('/polls/users/login/', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				username: this.state.username,
-				password: this.state.password
-			})
-		}).then((response) => {
-			if (response.status == 401 || response.status == 500) {
-				// TODO: handle error
-				this.setState({errorMessage:"Username or Password incorrect"})
-			} else {
-				// Going to login view
-				browserHistory.push('/polls');
-			}
-		})
+	login(username, password) {
+
+		// auth.login(username, password, (loggedIn) => {
+            // if (loggedIn) {
+				var csrftoken = cookie.load('csrftoken')
+                fetch('/polls/login/', {
+					credentials: 'include',
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'X-CSRFToken': csrftoken
+					},
+					body: JSON.stringify({
+						username: username,
+						password: password
+					})
+				}).then((response) => {
+					if (response.status == 401 || response.status == 500) {
+						// TODO: handle error
+						this.setState({errorMessage:"Username or Password incorrect"})
+					} else if (response.status == 200) {
+						return response.json();
+					}
+				}).then((data) => {
+
+					// Storing user
+					auth.setCurrentUser(data);
+					
+					// Going to login view
+					browserHistory.push('/questions');
+				})
+            // }
+        // })
 	}
 
 	onSnackbarCloe() {
@@ -51,7 +67,7 @@ class LoginComponent extends Component {
 	}
 
 	loginClick() {
-		this.login(this.state.email, this.state.password)
+		this.login(this.state.username, this.state.password)
 	}
 
 	render() {
@@ -65,7 +81,7 @@ class LoginComponent extends Component {
 		}
 		return (
 			<div>
-				{/*<Card>*/}
+				<Paper className='inputs-card'>
 					<div>
 						<TextField 
 							hintText="username" 
@@ -87,11 +103,11 @@ class LoginComponent extends Component {
 							style={loginStyle} 
 							primary={true} 
 							onClick={this.loginClick} 
-							disabled={this.state.password === "" && this.state.emailValid}
+							disabled={this.state.password === "" || this.state.username === ""}
 							// TODO: validate email
 						/>
 					</div>
-				{/*</Card>*/}
+				</Paper>
 				<Snackbar
 					open={this.state.errorMessage != ""}
 					message={this.state.errorMessage}

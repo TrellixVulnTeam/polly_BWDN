@@ -19,6 +19,7 @@ class PollsView extends Component {
 
 	loadQuestions() {
 		fetch('polls/questions/', {
+			credentials: 'include',
 			method: 'GET',
 			headers: {
 				'Accept': 'application/json',
@@ -43,9 +44,7 @@ class PollsView extends Component {
 					this.state.questions.map(question =>
 						<QuestionItem 
 							key={question.id}
-							questionText={question.question_text}
-							userPublished={question.user_name}
-							choicesSet={question.choice_set}
+							question={question}
 						/>
 					)
 				}

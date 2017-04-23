@@ -21,6 +21,7 @@ class Menu extends Component {
 
 	logoutClick() {
 		fetch('polls/users/logout/', {
+			credentials: 'include',
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -28,6 +29,7 @@ class Menu extends Component {
 			}
 		}).then((response) => {
 			if (response.status == 200) {
+				
 				browserHistory.push('/login');
 			} 
 		});

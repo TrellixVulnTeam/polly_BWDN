@@ -42,6 +42,14 @@ html, body
   background-color: #E8F5E9
 }
 
+.question-item {
+  margin: 10px 0px
+}
+
+.inputs-card {
+  text-align: center;
+}
+
 .fab {
     margin: 0px;
     top: auto;
@@ -49,6 +57,7 @@ html, body
     bottom: 20px;
     left: auto;
     position: fixed;
+    z-index: 1000;
 };
 
 @keyframes App-logo-spin {

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import '../App.css';
 import { browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -68,9 +66,6 @@ class MainFrameComponent extends Component {
     				title="Polly"
           			iconElementRight={<Menu />}
 				/>
-				<FloatingActionButton secondary={true} className="fab">
-					<ContentAdd />
-				</FloatingActionButton>
 
 				<div style={contentStyle}>
 					{this.props.children}

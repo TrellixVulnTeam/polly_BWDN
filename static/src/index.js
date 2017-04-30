@@ -6,6 +6,7 @@ import SignUpComponent from './SignUp/SignUpComponent.js'
 import LoginComponent from './Login/LoginComponent.js'
 import PollsView from './PollsView/PollsView.js'
 import MainFrameComponent from './MainFrame/MainFrameComponent.js'
+import AddQuestionComponent from './AddQuestion/AddQuestionComponent.js'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -67,6 +68,7 @@ const MuiApp = () => (
       </Route>
       <Route path="/questions" component={MainFrameComponent} onEnter={requireAuth}>
         <IndexRoute component={PollsView} />
+        <Route path="/questions/add" component={AddQuestionComponent}></Route>
       </Route>
     </Router>
   </MuiThemeProvider>

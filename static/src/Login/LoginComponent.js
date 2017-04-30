@@ -28,38 +28,34 @@ class LoginComponent extends Component {
 
 	login(username, password) {
 
-		// auth.login(username, password, (loggedIn) => {
-            // if (loggedIn) {
-				var csrftoken = cookie.load('csrftoken')
-                fetch('/polls/login/', {
-					credentials: 'include',
-					method: 'POST',
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-						'X-CSRFToken': csrftoken
-					},
-					body: JSON.stringify({
-						username: username,
-						password: password
-					})
-				}).then((response) => {
-					if (response.status == 401 || response.status == 500) {
-						// TODO: handle error
-						this.setState({errorMessage:"Username or Password incorrect"})
-					} else if (response.status == 200) {
-						return response.json();
-					}
-				}).then((data) => {
+		var csrftoken = cookie.load('csrftoken')
+		fetch('/polls/login/', {
+			credentials: 'include',
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrftoken
+			},
+			body: JSON.stringify({
+				username: username,
+				password: password
+			})
+		}).then((response) => {
+			if (response.status == 401 || response.status == 500) {
+				// TODO: handle error
+				this.setState({errorMessage:"Username or Password incorrect"})
+			} else if (response.status == 200) {
+				return response.json();
+			}
+		}).then((data) => {
 
-					// Storing user
-					auth.setCurrentUser(data);
-					
-					// Going to login view
-					browserHistory.push('/questions');
-				})
-            // }
-        // })
+			// Storing user
+			auth.setCurrentUser(data);
+			
+			// Going to login view
+			browserHistory.push('/questions');
+		})
 	}
 
 	onSnackbarCloe() {

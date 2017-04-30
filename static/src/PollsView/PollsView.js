@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import QuestionItem from './QuestionItem.js'
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import { browserHistory } from 'react-router';
 
 class PollsView extends Component {
 
@@ -36,6 +39,10 @@ class PollsView extends Component {
 		})
 	}
 
+	addQuestionClick() {
+		browserHistory.push("questions/add");
+	}
+
 	render() {
 
 		return (
@@ -48,6 +55,14 @@ class PollsView extends Component {
 						/>
 					)
 				}
+
+				<FloatingActionButton 
+					secondary={true} 
+					className="fab"
+					onClick={() => this.addQuestionClick()}
+				>
+					<ContentAdd />
+				</FloatingActionButton>
 			</div>
 		)
 	}

@@ -4,9 +4,11 @@ import FlatButton from 'material-ui/FlatButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ContentSend from 'material-ui/svg-icons/content/send'
 import Divider from 'material-ui/Divider';
+import LinearProgress from 'material-ui/LinearProgress';
 import cookie from 'react-cookie'
 import _ from 'underscore'
 import auth from '../Services/auth.js'
+import moment from 'moment'
 
 class QuestionItem extends Component {
 
@@ -14,12 +16,46 @@ class QuestionItem extends Component {
 		super(props);
 
 		this.state = {
-			selectedChoiceId: null
+			selectedChoiceId: null,
+			now: new Date().getTime()
 		}
 
 		this.onVoteClick = this.onVoteClick.bind(this);
 		this.vote = this.vote.bind(this);
 		this.onChoiceChanged = this.onChoiceChanged.bind(this);
+	}
+
+	componentWillMount() {
+
+		var currentUser = auth.getCurrentUser();
+		this.props.question.choice_set.map(choice => {
+			if (_.contains(choice.users_voted, currentUser.id)) {
+				this.setState({selectedChoiceId: choice.id,
+							   votedChoiceId: choice.id,
+							   isUserVoted: true});
+			}
+		})
+	}
+
+	componentDidMount() {
+
+		var now = new Date().getTime();
+		var questionEndDate = new Date(this.props.question.end_date);
+
+		if (now <= questionEndDate.getTime()) {
+    		this.timer = setTimeout(() => this.updateProgress(now), 30*1000);
+		}
+  	}
+
+	componentWillUnmount() {
+
+		if (this.timer) {
+			clearTimeout(this.timer);
+		}
+	}
+	
+	updateProgress(value) {
+		this.setState({now: value});
 	}
 
 	onVoteClick() {
@@ -53,18 +89,6 @@ class QuestionItem extends Component {
 				'Content-Type': 'application/json',
 				'X-CSRFToken': csrftoken
 			},
-		})
-	}
-
-	componentWillMount() {
-
-		var currentUser = auth.getCurrentUser();
-		this.props.question.choice_set.map(choice => {
-			if (_.contains(choice.users_voted, currentUser.id)) {
-				this.setState({selectedChoiceId: choice.id,
-							   votedChoiceId: choice.id,
-							   isUserVoted: true});
-			}
 		})
 	}
 
@@ -120,6 +144,32 @@ class QuestionItem extends Component {
 
 		return buttonsToRet;	
 	}
+
+	getTimeToVoteString(startTimeMs, endTimeMs) {
+		var timeToVote = new Date(endTimeMs - startTimeMs).getTime();
+		var toRet = "";
+
+		var days = Math.floor(timeToVote / 24 / 60 / 60 / 1000);
+		if (days > 0)  {
+			toRet += days + " days, "
+		}
+
+		timeToVote -= days * 24 * 60 * 60 * 1000;
+
+		var hours = Math.floor(timeToVote / 60 / 60 / 1000);
+		if (hours > 0) {
+			toRet += hours + " hours, "
+		}
+
+		timeToVote -= hours * 60 * 60 * 1000;
+
+		var minutes = Math.floor(timeToVote / 60 / 1000);
+		if (minutes > 0) {
+			toRet += minutes + " minutes"
+		}
+
+		return toRet;
+	}
 	
 	render() {
 
@@ -131,16 +181,34 @@ class QuestionItem extends Component {
 			textAlign: "end"
 		};
 		var currentUser = auth.getCurrentUser();
+		var questionStartTime = new Date(this.props.question.pub_date);
+		var questionEndTime = new Date(this.props.question.end_date);
+		var timeToVoteDivStyle = { marginBottom: 10 };
+		
 		return (
 			<div className="question-item">
 				<Card>
 					<CardHeader
 						title={this.props.question.question_text}
-						subtitle={this.props.user_name}
+						subtitle={this.props.question.user_name}
 						actAsExpander={true}
       					showExpandableButton={true}
 					/>
+					<LinearProgress 
+						mode="determinate" 
+						value={ Math.floor((this.state.now - questionStartTime.getTime()) / (questionEndTime.getTime() - questionStartTime.getTime()) * 100)}
+					/>
 					<CardText expandable={true} >
+						{
+							this.state.now < questionEndTime.getTime() ?
+								<div style={timeToVoteDivStyle}>
+									Time to vote: { this.getTimeToVoteString(this.state.now, questionEndTime.getTime()) }
+								</div> 
+								:
+								<div style={timeToVoteDivStyle} >
+									Done
+								</div>
+						}
 						<RadioButtonGroup 
 							name={radioName}
 							valueSelected={this.state.selectedChoiceId}
